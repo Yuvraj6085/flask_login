@@ -6,7 +6,7 @@ from flask_mysqldb import MySQL
 import bcrypt
 
 app = Flask(__name__)
-app.secret_key = "secret123"   # needed for WTForms + sessions
+app.secret_key = "secret123"   
 
 # MySQL Config
 app.config['MYSQL_HOST'] = 'localhost'
@@ -15,7 +15,7 @@ app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'wtf'
 mysql = MySQL(app)
 
-# ---------------- WTForms ---------------- #
+#  WTForms 
 class RegisterForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -27,8 +27,8 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField("Login")
 
-# ---------------- Create Table ---------------- #
-# ---------------- Create Table ---------------- #
+
+#  Create Table 
 with app.app_context():
     cur = mysql.connection.cursor()
     cur.execute("""
@@ -43,7 +43,7 @@ with app.app_context():
     cur.close()
 
 
-# ---------------- Routes ---------------- #
+#  Routes 
 @app.route('/')
 def home():
     return redirect(url_for('login'))
@@ -51,7 +51,7 @@ def home():
 # Register
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    form = RegisterForm()   # ✅ fixed
+    form = RegisterForm()
     if form.validate_on_submit():
         name = form.name.data
         email = form.email.data
@@ -78,7 +78,7 @@ def register():
 # Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()   # ✅ fixed
+    form = LoginForm()   
     if form.validate_on_submit():
         email = form.email.data
         password = form.password.data
